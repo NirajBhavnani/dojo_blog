@@ -11,7 +11,8 @@
 
 <script>
 import PostList from "../components/PostList.vue";
-import { ref } from "@vue/reactivity";
+import getPosts from "../composables/getPosts";
+
 export default {
   // Using CompositionAPI: setup function
   // This function will run before any other lifecycle hooks
@@ -21,23 +22,7 @@ export default {
     PostList,
   },
   setup() {
-    const posts = ref([]);
-    const error = ref(null);
-
-    const loadData = async () => {
-      try {
-        let data = await fetch("http://localhost:3000/posts");
-
-        if (!data.ok) {
-          throw Error("No data available");
-        }
-
-        posts.value = await data.json(); //parsing the json data into js
-      } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
-      }
-    };
+    const { posts, error, loadData } = getPosts(); //object destructuring
 
     loadData();
 
