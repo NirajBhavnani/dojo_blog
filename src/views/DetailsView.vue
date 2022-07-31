@@ -12,14 +12,17 @@
 <script>
 import getSinglePost from "../composables/getSinglePost";
 import Spinner from "../components/Spinner.vue";
+import { useRoute } from "vue-router"; //useRoute contains the information of current route
 
 export default {
-  props: ["id"],
+  // props: ["id"], no need for accepting props, since id is fetched from route object
 
   components: { Spinner },
 
-  setup(props) {
-    const { post, error, loadData } = getSinglePost(props.id);
+  setup() {
+    const route = useRoute();
+
+    const { post, error, loadData } = getSinglePost(route.params.id); //advantage: id can be fetched using useRoute without props
 
     loadData();
 

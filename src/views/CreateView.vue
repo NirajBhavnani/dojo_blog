@@ -15,12 +15,17 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import { useRouter } from "vue-router";
+
 export default {
   setup() {
     const title = ref("");
     const body = ref("");
     const tag = ref("");
     const tags = ref([]);
+
+    // For working with router programmatically when we are using CompositionAPI
+    const router = useRouter();
 
     const handleTags = () => {
       if (!tags.value.includes(tag.value)) {
@@ -44,6 +49,8 @@ export default {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newPost),
       }).catch((err) => console.log(err));
+
+      router.push({ name: "home" });
     };
 
     return { title, body, tag, handleTags, tags, handleSubmit };
