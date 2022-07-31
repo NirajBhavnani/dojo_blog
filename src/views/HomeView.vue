@@ -2,8 +2,9 @@
   <div class="home">
     <h1>Home</h1>
     <div v-if="error">{{ error }}</div>
-    <div v-if="posts.length">
+    <div v-if="posts.length" class="layout">
       <PostList :posts="posts" />
+      <TagCloud :posts="posts" />
     </div>
     <div v-else>
       <Spinner />
@@ -15,6 +16,7 @@
 import PostList from "../components/PostList.vue";
 import getPosts from "../composables/getPosts";
 import Spinner from "../components/Spinner.vue";
+import TagCloud from "../components/TagCloud.vue";
 
 export default {
   // Using CompositionAPI: setup function
@@ -24,6 +26,7 @@ export default {
   components: {
     PostList,
     Spinner,
+    TagCloud,
   },
   setup() {
     const { posts, error, loadData } = getPosts(); //object destructuring
@@ -40,5 +43,10 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 10px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
 }
 </style>
