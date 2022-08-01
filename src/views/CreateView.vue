@@ -16,6 +16,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
+import { firestore, timestamp } from "@/firebase/config";
 
 export default {
   setup() {
@@ -40,15 +41,12 @@ export default {
       let newPost = {
         title: title.value,
         body: body.value,
-        tag: tag.value,
         tags: tags.value,
+        createdAt: timestamp(),
       };
 
-      await fetch("http://localhost:3000/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newPost),
-      }).catch((err) => console.log(err));
+      // So for adding a document, add() is used in which we pass an object parameter
+      await firestore.collection("posts").add(newPost);
 
       router.push({ name: "home" });
     };

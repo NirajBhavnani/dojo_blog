@@ -1,3 +1,4 @@
+import { firestore } from "@/firebase/config";
 import { ref } from "vue";
 
 const getSinglePost = (id) => {
@@ -6,18 +7,16 @@ const getSinglePost = (id) => {
 
   const loadData = async () => {
     try {
-      // simulate delay
-      await new Promise((resolve) => {
-        setTimeout(resolve, 2000);
-      });
+      // Here, id is fetched from address bar which is equal to firestore collection id
+      // doc(id) is used to grab one single document
+      let res = await firestore.collection("posts").doc(id).get();
 
-      let data = await fetch("http://localhost:3000/posts/" + id);
-
-      if (!data.ok) {
+      // exists is a property inside res(Firestore) object
+      if (!res.exists) {
         throw Error("Post does not exists");
       }
 
-      post.value = await data.json(); //parsing the json data into js
+      post.value = { ...res.data(), id: res.id };
     } catch (err) {
       error.value = err.message;
       console.log(error.value);

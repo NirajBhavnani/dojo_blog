@@ -14,7 +14,7 @@ const routes = [
     path: "/posts/:id",
     name: "details",
     component: DetailsView,
-    props: true,
+    props: true, //any route parameter we pass into the components can be accepted/accessed using props
   },
   {
     path: "/create",
